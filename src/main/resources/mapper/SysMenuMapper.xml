@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shiro.mapper.SysMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.shiro.model.sys.SysMenu">
+        <id column="id" property="id" />
+        <result column="code" property="code" />
+        <result column="parent_id" property="parentId" />
+        <result column="name" property="name" />
+        <result column="icon" property="icon" />
+        <result column="url" property="url" />
+        <result column="priority" property="priority" />
+        <result column="levels" property="levels" />
+        <result column="type" property="type" />
+        <result column="tips" property="tips" />
+        <result column="status" property="status" />
+        <result column="is_open" property="isOpen" />
+        <result column="deleted" property="deleted" />
+        <result column="create_time" property="createTime" />
+        <result column="modify_time" property="modifyTime" />
+    </resultMap>
+
+    <update id="deleteMenuById">
+        update sys_menu set deleted=#{deleted} where id=#{menuId}
+    </update>
+
+    <select id="findByMenuIds" resultMap="BaseResultMap">
+        select id, code, parent_id, name, icon, url, priority, levels, type, tips, status, is_open,
+            deleted, create_time from sys_menu
+        where status=1 and deleted=0 and id in ${menuIds}
+    </select>
+
+    <select id="getCountByCode" resultType="java.lang.Integer">
+        select count(id) from sys_menu
+        where code=#{menuCode} and deleted=0
+        <if test="menuId != null and menuId != 0 ">
+            and id != #{menuId}
+        </if>
+    </select>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        select id, code, parent_id, name, icon, url, priority, levels, type, tips, status, is_open,
+            deleted, create_time from sys_menu
+        where deleted=0
+        <if test="menuName != null and menuName != '' " >
+            and name=#{menuName}
+        </if>
+        order by ISNULL(priority), priority, create_time desc
+    </select>
+
+    <select id="queryMenuList" resultMap="BaseResultMap">
+        select id, code, parent_id, name from sys_menu
+        where type=#{menuType} and status=1 and deleted=0
+    </select>
+
+    <select id="getCountByParentId" resultType="java.lang.Integer">
+        select count(id) from sys_menu where parent_id=#{menuId}
+    </select>
+
+    <select id="queryAllMenuList" resultMap="BaseResultMap">
+        select id, code, parent_id, name, icon, url, priority, levels, type, tips, status, is_open,
+            deleted, create_time from sys_menu
+        where status=1 and deleted=0
+    </select>
+
+</mapper>

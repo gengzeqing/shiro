@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shiro.mapper.SysDeptMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.shiro.model.sys.SysDept">
+        <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="simple_name" property="simpleName" />
+        <result column="full_name" property="fullName" />
+        <result column="priority" property="priority" />
+        <result column="tips" property="tips" />
+        <result column="deleted" property="deleted" />
+        <result column="create_time" property="createTime" />
+        <result column="modify_time" property="modifyTime" />
+    </resultMap>
+
+    <update id="deleteDeptById">
+        update sys_dept set deleted=#{deleted} where id=#{deptId}
+    </update>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        select id, parent_id, simple_name, full_name, priority, tips, deleted, create_time
+        from sys_dept where deleted=0
+        <if test="fullName != null and fullName != '' " >
+            and full_name like CONCAT('%',#{fullName},'%')
+        </if>
+        ORDER BY ISNULL(priority), priority, create_time desc
+    </select>
+
+    <select id="queryDeptList" resultMap="BaseResultMap">
+        select id, parent_id, simple_name, full_name
+        from sys_dept
+        where deleted=0
+        ORDER BY ISNULL(priority), priority, create_time desc
+    </select>
+
+</mapper>

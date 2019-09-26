@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shiro.mapper.SysRoleMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.shiro.model.sys.SysRoleMenu">
+        <id column="id" property="id" />
+        <result column="menu_id" property="menuId" />
+        <result column="role_id" property="roleId" />
+        <result column="deleted" property="deleted" />
+        <result column="create_time" property="createTime" />
+        <result column="modify_time" property="modifyTime" />
+    </resultMap>
+
+    <delete id="deleteByRoleId">
+        delete from sys_role_menu where role_id=#{roleId}
+    </delete>
+
+    <select id="findMenuIdsByRoleIds" resultType="java.lang.Long">
+        select distinct menu_id from sys_role_menu where deleted=0 and role_id in ${roleIds}
+    </select>
+
+    <select id="getCountByMenuId" resultType="java.lang.Integer">
+        select count(role_id) from sys_role_menu where menu_id=#{menuId}
+    </select>
+
+</mapper>

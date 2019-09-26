@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shiro.mapper.SysRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.shiro.model.sys.SysRole">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="alias" property="alias" />
+        <result column="priority" property="priority" />
+        <result column="parent_id" property="parentId" />
+        <result column="dept_id" property="deptId" />
+        <result column="deleted" property="deleted" />
+        <result column="create_time" property="createTime" />
+        <result column="modify_time" property="modifyTime" />
+    </resultMap>
+
+    <update id="deleteRoleById">
+        update sys_role set deleted=#{deleted} where id=#{roleId}
+    </update>
+
+    <select id="findRolesByIds" resultMap="BaseResultMap">
+        select id, name, alias, priority, parent_id, dept_id, deleted, create_time
+        from sys_role where deleted=0 and id in ${roleIds}
+    </select>
+    <select id="queryList" resultMap="BaseResultMap">
+        select id, name, alias, priority, parent_id, dept_id, deleted, create_time
+        from sys_role where deleted=0
+    </select>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        select id, name, alias, priority, parent_id, dept_id, deleted, create_time
+        from sys_role where deleted=0
+        <if test="name != null and name != '' " >
+            and name like CONCAT('%',#{name},'%')
+        </if>
+        <if test="status != null" >
+            and status=#{status}
+        </if>
+        order by ISNULL(priority), priority, create_time desc
+    </select>
+
+</mapper>

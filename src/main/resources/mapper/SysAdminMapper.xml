@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shiro.mapper.SysAdminMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.shiro.model.sys.SysAdmin">
+        <id column="id" property="id" />
+        <result column="account" property="account" />
+        <result column="cn_name" property="cnName" />
+        <result column="password" property="password" />
+        <result column="salt" property="salt" />
+        <result column="sex" property="sex" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="dept_id" property="deptId" />
+        <result column="desensitization_type" property="desensitizationType" />
+        <result column="status" property="status" />
+        <result column="deleted" property="deleted" />
+        <result column="create_time" property="createTime" />
+        <result column="modify_time" property="modifyTime" />
+    </resultMap>
+    <update id="updatePassword">
+        update sys_admin set password=#{password}, salt=#{salt} where id=#{accountId}
+    </update>
+
+    <update id="deleteAdminById">
+        update sys_admin set deleted=#{deleted} where id=#{accountId}
+    </update>
+
+    <update id="updateValid">
+        update sys_admin set status=#{enableStatus} where id=#{accountId}
+    </update>
+
+    <select id="getByAccount" resultMap="BaseResultMap">
+        select id, account, cn_name, password, salt, sex, email, phone, dept_id, desensitization_type, status, deleted, create_time, modify_time
+        from sys_admin
+        where account=#{account} and deleted=0
+    </select>
+
+    <select id="queryPage" resultMap="BaseResultMap">
+        select id, account, cn_name, password, salt, sex, email, phone, dept_id, desensitization_type, status, deleted, create_time, modify_time
+        from sys_admin where deleted=0
+        <if test="account != null and account != '' " >
+            and account like CONCAT('%',#{account},'%')
+        </if>
+        <if test="cnName != null and cnName != '' " >
+            and cn_name like CONCAT('%',#{cnName},'%')
+        </if>
+        <if test="userIds != null and userIds != '' " >
+            and id in ${userIds}
+        </if>
+        <if test="userIdNotIn != null and userIdNotIn != '' " >
+            and id not in ${userIdNotIn}
+        </if>
+        order by create_time desc
+    </select>
+
+    <select id="countByAccount" resultType="java.lang.Integer">
+        select count(id) from sys_admin where account=#{account} and deleted=0
+        <if test="accountId != null and accountId != '' ">
+            and id != #{accountId}
+        </if>
+    </select>
+
+</mapper>
