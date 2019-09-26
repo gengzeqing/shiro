@@ -55,7 +55,7 @@
     </select>
 
     <select id="getCountByParentId" resultType="java.lang.Integer">
-        select count(id) from sys_menu where parent_id=#{menuId}
+        select count(id) from sys_menu where parent_id=#{menuId} and deleted = #{code}
     </select>
 
     <select id="queryAllMenuList" resultMap="BaseResultMap">

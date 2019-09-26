@@ -3,7 +3,6 @@ package com.example.shiro.mapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.example.shiro.model.sys.SysMenu;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -59,9 +58,10 @@ public interface SysMenuMapper extends CommonMapper<SysMenu> {
     /**
      * 计数子菜单个数
      * @param menuId
+     * @param code
      * @return
      */
-    int getCountByParentId(@Param("menuId") Long menuId);
+    int getCountByParentId(@Param("menuId") Long menuId, @Param("menuId")Integer code);
 
     /**
      * 查询所有可用权限列表

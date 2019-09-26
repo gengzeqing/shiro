@@ -99,7 +99,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public int getCountByParentId(Long menuId) {
-        return sysMenuMapper.getCountByParentId(menuId);
+        return sysMenuMapper.getCountByParentId(menuId,DeletedStatus.UN_DELETED.getCode());
     }
 
 }
