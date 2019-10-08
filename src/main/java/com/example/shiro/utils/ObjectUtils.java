@@ -74,11 +74,16 @@ public class ObjectUtils {
             if (obj instanceof Integer) {
                 return obj != null ? obj.toString() : null;
             }
-            if (obj instanceof Integer) {
-                return obj != null ? obj.toString() : null;
-            }
             if (obj instanceof BigDecimal) {
                 return obj != null ? obj.toString() : null;
+            }
+            if (obj instanceof Date) {
+                if (obj != null) {
+                    String format = DateUtils.format((Date) obj, DateUtils.YYYY_MM_DD_HH_MM_SS);
+                    return format;
+                }else {
+                    return null;
+                }
             }
         }
         return null;

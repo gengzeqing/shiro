@@ -112,7 +112,7 @@ public class AdminLoginController extends BaseController {
     @ValidateGroup(fileds = {
             @ValidateFiled(index = 0, filedName = "account", notNull = true,message = "用户名不能为空"),
             @ValidateFiled(index = 0, filedName = "password", notNull = true,message = "密码不能为空"),
-            @ValidateFiled(index = 0, filedName = "password", notNull = true,length = 6,message = "密码长度不合法"),
+            @ValidateFiled(index = 0, filedName = "password", notNull = true,length = 10,message = "密码长度不合法")
     })
     public Result login(@RequestBody LoginReqDTO loginReqDTO) {
 
