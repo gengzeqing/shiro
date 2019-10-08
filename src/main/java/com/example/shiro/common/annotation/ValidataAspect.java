@@ -1,7 +1,7 @@
 package com.example.shiro.common.annotation;
 
-import com.example.shiro.common.enums.RetCodeEnum;
 import com.example.shiro.model.base.Result;
+import com.example.shiro.utils.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -118,12 +118,16 @@ public class ValidataAspect {
             Object arg = args[index];
             Object field = getFieldByObjectAndFiledName(arg, valiedatefile.filedName());
             boolean notNull = valiedatefile.notNull();
+            int length = valiedatefile.length();
             if (notNull) {
-                if (field instanceof String) {
-                    if (((String) field) ==null || ((String) field).length() <=0) {
-                        log.warn("valiedatefile.filedName() 数据为{}",field);
-                        return Result.error("201",valiedatefile.message());
-                    }
+                boolean notNull1 = ObjectUtils.isNotNull(field);
+                // 判断是否为空
+                if (!notNull1) {
+                    return Result.failed(valiedatefile.message());
+                }
+                // 判断长度
+                if (length != -1 && ObjectUtils.toString(field).length() > length) {
+                    return Result.failed(valiedatefile.message());
                 }
             }
         }

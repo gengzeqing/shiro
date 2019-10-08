@@ -35,4 +35,10 @@ public @interface ValidateFiled {
      */
     String message () default "";
 
+    /**
+     * 验证长度
+     * @return
+     */
+    int length () default -1;
+
 }
