@@ -1,6 +1,8 @@
 package com.example.shiro.controller.sys;
 
 import com.baomidou.mybatisplus.toolkit.StringUtils;
+import com.example.shiro.common.annotation.ValidateFiled;
+import com.example.shiro.common.annotation.ValidateGroup;
 import com.example.shiro.common.constants.Administrator;
 import com.example.shiro.common.constants.RedisConstants;
 import com.example.shiro.common.enums.BizExceptionEnum;
@@ -107,6 +109,10 @@ public class AdminLoginController extends BaseController {
      * @return 结果
      */
     @PostMapping("/login")
+    @ValidateGroup(fileds = {
+            @ValidateFiled(index = 0, filedName = "account", notNull = true,message = "用户名不能为空"),
+            @ValidateFiled(index = 0, filedName = "password", notNull = true,message = "密码不能为空")
+    })
     public Result login(@RequestBody LoginReqDTO loginReqDTO) {
 
         //校验参数
